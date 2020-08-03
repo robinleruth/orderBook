@@ -1,8 +1,11 @@
+import time
+
 from typing import Dict
 from typing import List
 from typing import Set
 from dataclasses import dataclass
 from dataclasses import field
+from threading import Thread
 
 from app.domain.service.market_data_connector import MarketDataConnector
 from app.domain.model.order import Order
@@ -12,6 +15,8 @@ from app.domain.model.command.update_command import UpdateCommand
 from app.domain.model.command.cancel_command import CancelCommand
 from app.infrastructure.connector.market_data_connector_factory import market_data_connector_factory
 from app.infrastructure.log import logger
+from app.infrastructure.config import app_config
+from app.infrastructure.config import TestConfig
 
 
 @dataclass
@@ -23,6 +28,9 @@ class OrderBookService:
 
     def __post_init__(self):
         logger.info('Init OrderBookService')
+        if not app_config is TestConfig:
+            logger.info('Launch refresh from exchange every 5 seconds')
+            Thread(target=self.refresh_every_5_seconds).start()
 
     def get_all(self):
         return [i.serialize for i in self.trades_by_id.values()]
@@ -54,6 +62,11 @@ class OrderBookService:
 
     def get_best_price(self):
         pass
+
+    def refresh_every_5_seconds(self):
+        while True:
+            self.refresh_from_exchange()
+            time.sleep(5)
 
     def refresh_from_exchange(self):
         logger.info('refresh_from_exchange is called')
