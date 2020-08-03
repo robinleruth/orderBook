@@ -21,27 +21,32 @@ class TestOrderBookService(unittest.TestCase):
         pass
 
     def test_data_structure(self):
-        self.assertEqual(2, len(self.service.trades_by_id.values()))
-        self.assertEqual(1, len(self.service.trades_by_ticker.keys()))
-        self.assertEqual(2, len(self.service.trades_by_ticker['AAPL']))
+        self.assertEqual(2, len(self.service.orders_by_id.values()))
+        self.assertEqual(1, len(self.service.orders_by_ticker.keys()))
+        self.assertEqual(2, len(self.service.orders_by_ticker['AAPL']))
 
     def test_update_one(self):
-        self.assertEqual(1, self.service.trades_by_id['1'].size)
+        self.assertEqual(1, self.service.orders_by_id['1'].size)
         self.service.update_one('1', 40)
-        self.assertEqual(40, self.service.trades_by_id['1'].size)
-        o = list(filter(lambda x: x.order_id == '1', self.service.trades_by_ticker['AAPL']))[0]
+        self.assertEqual(40, self.service.orders_by_id['1'].size)
+        o = list(filter(lambda x: x.order_id == '1', self.service.orders_by_ticker['AAPL']))[0]
         self.assertEqual(40, o.size)
 
     def test_cancel_one(self):
         self.service.cancel_one('1')
-        self.assertTrue('1' not in self.service.trades_by_id)
-        self.assertEqual(1, len(self.service.trades_by_ticker['AAPL']))
+        self.assertTrue('1' not in self.service.orders_by_id)
+        self.assertEqual(1, len(self.service.orders_by_ticker['AAPL']))
 
     def test_get_all(self):
         print(self.service.get_all())
 
     def test_refresh_from_exchange(self):
         self.service.refresh_from_exchange()
+
+    def test_cache_best_price(self):
+        self.service.cache_best_prices()
+        lst = self.service.get_best_price()
+        print([i.serialize for i in lst])
 
 
 if __name__ == '__main__':

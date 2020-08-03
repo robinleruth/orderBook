@@ -12,4 +12,4 @@ class OrderBookController(Resource):
     @ns.doc('Get', description='Get best prices')
     def get(self):
         service = order_book_service_factory()
-        return 'Ok', 200
+        return [i.serialize for i in service.get_best_price()]
