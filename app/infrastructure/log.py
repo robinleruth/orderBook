@@ -8,7 +8,7 @@ from app.infrastructure.config import app_config
 
 
 def create_logger():
-    _logger = logging.getLogger('sc2_speaker')
+    _logger = logging.getLogger('order_book_logger')
     _logger.setLevel(logging.INFO)
     os.makedirs(app_config.LOG_FOLDER, exist_ok=True)
     fh = RotatingFileHandler(app_config.LOG_FILE_PATH, maxBytes=1024000, backupCount=10)
