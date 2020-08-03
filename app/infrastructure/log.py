@@ -5,7 +5,6 @@ from logging.handlers import RotatingFileHandler
 from logging import StreamHandler
 
 from app.infrastructure.config import app_config
-from app.infrastructure.sql_alchemy_handler import SqlAlchemyHandler
 
 
 def create_logger():
@@ -20,8 +19,6 @@ def create_logger():
     st = StreamHandler()
     st.setFormatter(formatter)
     _logger.addHandler(st)
-    sql = SqlAlchemyHandler()
-    _logger.addHandler(sql)
     return _logger
 
 
