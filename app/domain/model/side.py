@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class Side(Enum):
-    BUY = 'BUY'
-    SELL = 'SELL'
+    BUY = 'B'
+    SELL = 'S'
