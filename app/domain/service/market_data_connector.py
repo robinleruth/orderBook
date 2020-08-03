@@ -7,5 +7,5 @@ from app.domain.model.command.command import Command
 
 class MarketDataConnector(metaclass=ABCMeta):
     @abstractmethod
-    def get_actions() -> List[Command]:
+    def get_actions(self) -> List[Command]:
         pass

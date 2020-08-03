@@ -41,7 +41,7 @@ class TestOrderBookService(unittest.TestCase):
         print(self.service.get_all())
 
     def test_refresh_from_exchange(self):
-        pass
+        self.service.refresh_from_exchange()
 
 
 if __name__ == '__main__':

@@ -60,6 +60,7 @@ class OrderBookService:
         actions: List[Command] = self.market_data_connector.get_actions()
         logger.info(f'{actions} received from exchange')
         for action in actions:
+            logger.info(f'Command {action}')
             if isinstance(action, AddCommand):
                 action: AddCommand = action
                 self.add_one(action.order)
@@ -70,5 +71,4 @@ class OrderBookService:
                 action: CancelCommand = action
                 self.cancel_one(action.order_id)
             else:
-                logger.warn((f'{action} not implemented')
-                raise NotImplementedError(f'{action} not implemented')
+                logger.warn(f'{action} not implemented')
