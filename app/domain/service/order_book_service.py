@@ -73,8 +73,14 @@ class OrderBookService:
             orders = self.orders_by_ticker[ticker]
             buy_orders = list(filter(lambda x: x.side == Side.BUY, orders))
             sell_orders = list(filter(lambda x: x.side == Side.SELL, orders))
-            bid = max(sell_orders, key=lambda x: x.price).price
-            ask = min(buy_orders, key=lambda x: x.price).price
+            try:
+                bid = max(sell_orders, key=lambda x: x.price).price
+            except:
+                bid = 0
+            try:
+                ask = min(buy_orders, key=lambda x: x.price).price
+            except:
+                ask = 0
             self.prices_by_ticker[ticker] = Price(ticker, bid, ask)
 
     def refresh_every_5_seconds(self):
