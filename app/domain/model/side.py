@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class Side(Enum):
+class Side(str, Enum):
     BUY = 'B'
     SELL = 'S'

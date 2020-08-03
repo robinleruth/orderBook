@@ -9,6 +9,8 @@ from app.domain.model.command.add_command import AddCommand
 from app.domain.model.command.update_command import UpdateCommand
 from app.domain.model.command.cancel_command import CancelCommand
 from app.domain.model.side import Side
+from app.domain.model.order import Order
+from app.domain.model.action import Action
 
 
 class MockMarketDataConnector(MarketDataConnector):
@@ -19,6 +21,11 @@ class MockMarketDataConnector(MarketDataConnector):
             AddCommand: 'a',
             UpdateCommand: 'u',
             CancelCommand: 'c'
+        }
+        self.mapping_letter_to_actions = {
+            'a': AddCommand,
+            'u': UpdateCommand,
+            'c': CancelCommand
         }
         self.tickers = ['AAPL', 'GOOG', 'SPY']
 
@@ -54,7 +61,32 @@ class MockMarketDataConnector(MarketDataConnector):
         return s
 
     def _generate_data_stream(self) -> List[str]:
-        pass
+        nb_message = random.randint(1, 10)
+        return [self._generate_one_string() for _ in range(nb_message)]
 
     def _parse(self, codes: List[str]) -> List[Command]:
-        return []
+        return [self._parse_one(code) for code in codes]
+
+    def _parse_one(self, code: str) -> Command:
+        lst = code.split('|')
+        if len(lst) == 7:
+            timestamp = int(lst[0])
+            order_id = lst[1]
+            # action = self.mapping_letter_to_actions[lst[2]]
+            ticker = lst[3]
+            side = Side(lst[4])
+            price = float(lst[5])
+            size = float(lst[6])
+            order = Order(timestamp, order_id, ticker, side, price, size)
+            return AddCommand(Action.ADD, order)
+        elif len(lst) == 4:
+            timestamp = int(lst[0])
+            order_id = lst[1]
+            # action = self.mapping_letter_to_actions[lst[2]]
+            size = lst[3]
+            return UpdateCommand(Action.UPDATE, order_id, size)
+        else:
+            timestamp = int(lst[0])
+            order_id = lst[1]
+            return CancelCommand(Action.CANCEL, order_id)
+
