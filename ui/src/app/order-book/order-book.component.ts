@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderBookService } from '../order-book.service';
+import { Price } from '../model/price';
 
 @Component({
   selector: 'app-order-book',
@@ -7,8 +8,17 @@ import { OrderBookService } from '../order-book.service';
   styleUrls: ['./order-book.component.scss']
 })
 export class OrderBookComponent implements OnInit {
+    prices: Price[] = [];
 
   constructor(private orderBookService: OrderBookService) { }
+
+  columnDefs = [
+        {headerName: 'Ticker', field: 'ticker' },
+        {headerName: 'Bid', field: 'bid' },
+        {headerName: 'Ask', field: 'ask'}
+    ];
+
+    rowData;
 
   ngOnInit(): void {
       (function(that){
@@ -21,7 +31,9 @@ export class OrderBookComponent implements OnInit {
 
   getBestPrices(): void {
       this.orderBookService.getBestPrices().subscribe(n => {
-          console.log(n);
+          this.prices = n;
+          this.rowData = n;
+          console.log(this.prices);
       });
   }
 

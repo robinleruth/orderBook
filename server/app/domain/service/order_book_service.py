@@ -74,20 +74,20 @@ class OrderBookService:
             buy_orders = list(filter(lambda x: x.side == Side.BUY, orders))
             sell_orders = list(filter(lambda x: x.side == Side.SELL, orders))
             try:
-                bid = max(sell_orders, key=lambda x: x.price).price
-            except:
-                bid = 0
-            try:
-                ask = min(buy_orders, key=lambda x: x.price).price
+                ask = max(sell_orders, key=lambda x: x.price).price
             except:
                 ask = 0
+            try:
+                bid = min(buy_orders, key=lambda x: x.price).price
+            except:
+                bid = 0
             self.prices_by_ticker[ticker] = Price(ticker, bid, ask)
 
     def refresh_every_5_seconds(self):
         while True:
             self.refresh_from_exchange()
             self.cache_best_prices()
-            time.sleep(5)
+            time.sleep(app_config.SECONDS_BEFORE_REFRESH)
 
     def refresh_from_exchange(self):
         logger.info('refresh_from_exchange is called')

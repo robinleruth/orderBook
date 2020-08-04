@@ -15,6 +15,7 @@ class Config:
     LOG_FILENAME = 'app.log'
     LOG_FILE_PATH = os.path.join(LOG_FOLDER, LOG_FILENAME)
     SQL_URI = 'sqlite:///app.db'
+    SECONDS_BEFORE_REFRESH = 1
 
 
 class TestConfig(Config):
