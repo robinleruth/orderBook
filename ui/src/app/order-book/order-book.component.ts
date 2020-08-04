@@ -4,7 +4,7 @@ import { OrderBookService } from '../order-book.service';
 @Component({
   selector: 'app-order-book',
   templateUrl: './order-book.component.html',
-  styleUrls: ['./order-book.component.css']
+  styleUrls: ['./order-book.component.scss']
 })
 export class OrderBookComponent implements OnInit {
 
