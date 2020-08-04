@@ -14,7 +14,7 @@ export class OrderBookComponent implements OnInit {
 
   columnDefs = [
         {headerName: 'Ticker', field: 'ticker' },
-        {headerName: 'Bid', field: 'bid' },
+        {headerName: 'Bid', field: 'bid', newValueHandler: this.compareValues },
         {headerName: 'Ask', field: 'ask'}
     ];
 
@@ -35,6 +35,15 @@ export class OrderBookComponent implements OnInit {
           this.rowData = n;
           console.log(this.prices);
       });
+  }
+
+  compareValues(params) {
+        if (params.oldValue > params.newValue){
+            return {color: 'green', backgroundColor: 'black'};
+        }
+        if (params.oldValue < params.newValue){
+            return {color: 'red', backgroundColor: 'black'};
+    }
   }
 
 }
