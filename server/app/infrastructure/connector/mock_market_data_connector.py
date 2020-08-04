@@ -51,9 +51,9 @@ class MockMarketDataConnector(MarketDataConnector):
         ticker = random.choice(self.tickers)
         side = random.choice(['B', 'S'])
         if side == 'S':
-            price = random.randint(100, 150)
+            price = random.randint(101, 150)
         else:
-            price = random.randint(50, 100)
+            price = random.randint(50, 99)
         size = random.randint(1, 10)
         if command is AddCommand:
             s = '|'.join([str(timestamp), str(order_id), action, ticker, side, str(price), str(size)])

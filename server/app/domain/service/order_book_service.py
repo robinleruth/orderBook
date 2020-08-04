@@ -74,11 +74,11 @@ class OrderBookService:
             buy_orders = list(filter(lambda x: x.side == Side.BUY, orders))
             sell_orders = list(filter(lambda x: x.side == Side.SELL, orders))
             try:
-                ask = max(sell_orders, key=lambda x: x.price).price
+                ask = min(sell_orders, key=lambda x: x.price).price
             except:
                 ask = 0
             try:
-                bid = min(buy_orders, key=lambda x: x.price).price
+                bid = max(buy_orders, key=lambda x: x.price).price
             except:
                 bid = 0
             self.prices_by_ticker[ticker] = Price(ticker, bid, ask)
