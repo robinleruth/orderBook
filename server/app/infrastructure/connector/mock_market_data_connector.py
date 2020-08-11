@@ -45,9 +45,12 @@ class MockMarketDataConnector(MarketDataConnector):
         """
         command: Command = random.choice(self.commands)
         timestamp = int(time.time())
-        order_id = self._id
-        self._id += 1
         action = self.mapping_actions[command]
+        if command is AddCommand:
+            self._id += 1
+            order_id = self._id
+        else:
+            order_id = random.randint(1, self._id)
         ticker = random.choice(self.tickers)
         side = random.choice(['B', 'S'])
         if side == 'S':
